@@ -348,7 +348,7 @@ class HuggingFaceInferenceAPIEmbeddings(BaseModel, Embeddings):
                 "inputs": texts,
                 "options": {"wait_for_model": True, "use_cache": True},
             },
-        )
+        timeout=60)
         return response.json()
 
     def embed_query(self, text: str) -> List[float]:
