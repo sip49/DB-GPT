@@ -1,6 +1,5 @@
 import itertools
 import logging
-import random
 import threading
 import time
 from abc import ABC, abstractmethod
@@ -10,6 +9,7 @@ from typing import Dict, List, Optional, Tuple
 
 from dbgpt.component import BaseComponent, ComponentType, SystemApp
 from dbgpt.model.base import ModelInstance
+import secrets
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +103,7 @@ class ModelRegistry(BaseComponent, ABC):
         instances = [i for i in instances if i.enabled]
         if not instances:
             return None
-        return random.choice(instances)
+        return secrets.SystemRandom().choice(instances)
 
     @abstractmethod
     async def send_heartbeat(self, instance: ModelInstance) -> bool:

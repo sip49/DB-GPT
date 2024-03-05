@@ -1,11 +1,11 @@
 import os
-import random
 import string
 from datetime import datetime, timedelta
 from typing import List
 
 import pymysql
 import pymysql.cursors
+import secrets
 
 # At first you need to create an test database which called dbgpt_test;
 # you can use next command to create.
@@ -67,20 +67,20 @@ def user_build(names: List, country: str, grander: str = "Male") -> List:
 
         name = names[i - 1]
         email = f"{name}@example.com"
-        mobile = "".join(random.choices(string.digits, k=10))
+        mobile = "".join(secrets.SystemRandom().choices(string.digits, k=10))
         gender = grander
-        birth = f"19{random.randint(60, 99)}-{random.randint(1, 12):02d}-{random.randint(1, 28):02d}"
+        birth = f"19{secrets.SystemRandom().randint(60, 99)}-{secrets.SystemRandom().randint(1, 12):02d}-{secrets.SystemRandom().randint(1, 28):02d}"
         country = country
-        city = random.choice(cities[country])
+        city = secrets.SystemRandom().choice(cities[country])
 
         now = datetime.now()
         year = now.year
 
         start = datetime(year, 1, 1)
         end = datetime(year, 12, 31)
-        random_date = start + timedelta(days=random.randint(0, (end - start).days))
+        random_date = start + timedelta(days=secrets.SystemRandom().randint(0, (end - start).days))
         random_time = datetime.combine(random_date, datetime.min.time()) + timedelta(
-            seconds=random.randint(0, 24 * 60 * 60 - 1)
+            seconds=secrets.SystemRandom().randint(0, 24 * 60 * 60 - 1)
         )
 
         random_datetime_str = random_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -142,24 +142,24 @@ def gnerate_all_orders(users, cursor):
 
     for i in range(1, orders_num + 1):
         id = i
-        order_no = "".join(random.choices(string.ascii_uppercase, k=3)) + "".join(
-            random.choices(string.digits, k=10)
+        order_no = "".join(secrets.SystemRandom().choices(string.ascii_uppercase, k=3)) + "".join(
+            secrets.SystemRandom().choices(string.digits, k=10)
         )
-        product_category = random.choice(categories)
-        product_name = random.choice(categories_product[product_category])
-        amount = round(random.uniform(0, 10000), 2)
-        pay_status = random.choice(["SUCCESS", "FAILD", "CANCEL", "REFUND"])
-        user_id = random.choice(users)[0]
-        user_name = random.choice(users)[1]
+        product_category = secrets.SystemRandom().choice(categories)
+        product_name = secrets.SystemRandom().choice(categories_product[product_category])
+        amount = round(secrets.SystemRandom().uniform(0, 10000), 2)
+        pay_status = secrets.SystemRandom().choice(["SUCCESS", "FAILD", "CANCEL", "REFUND"])
+        user_id = secrets.SystemRandom().choice(users)[0]
+        user_name = secrets.SystemRandom().choice(users)[1]
 
         now = datetime.now()
         year = now.year
 
         start = datetime(year, 1, 1)
         end = datetime(year, 12, 31)
-        random_date = start + timedelta(days=random.randint(0, (end - start).days))
+        random_date = start + timedelta(days=secrets.SystemRandom().randint(0, (end - start).days))
         random_time = datetime.combine(random_date, datetime.min.time()) + timedelta(
-            seconds=random.randint(0, 24 * 60 * 60 - 1)
+            seconds=secrets.SystemRandom().randint(0, 24 * 60 * 60 - 1)
         )
 
         random_datetime_str = random_time.strftime("%Y-%m-%d %H:%M:%S")

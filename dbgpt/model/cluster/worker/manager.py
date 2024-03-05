@@ -3,7 +3,6 @@ import itertools
 import json
 import logging
 import os
-import random
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -36,6 +35,7 @@ from dbgpt.util.parameter_utils import (
 from dbgpt.util.system_utils import get_system_info
 from dbgpt.util.tracer import SpanType, SpanTypeRunName, initialize_tracer, root_tracer
 from dbgpt.util.utils import setup_http_service_logging, setup_logging
+import secrets
 
 logger = logging.getLogger(__name__)
 
@@ -291,7 +291,7 @@ class LocalWorkerManager(WorkerManager):
             raise Exception(
                 f"Cound not found worker instances for model name {model_name} and worker type {worker_type}"
             )
-        worker_run_data = random.choice(worker_instances)
+        worker_run_data = secrets.SystemRandom().choice(worker_instances)
         return worker_run_data
 
     async def select_one_instance(
