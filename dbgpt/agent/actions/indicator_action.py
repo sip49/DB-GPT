@@ -93,13 +93,13 @@ class IndicatorAction(Action[IndicatorInput]):
             try:
                 status = Status.RUNNING.value
                 if param.method.lower() == "get":
-                    response = requests.get(param.api, params=param.args)
+                    response = requests.get(param.api, params=param.args, timeout=60)
                 elif param.method.lower() == "post":
-                    response = requests.post(param.api, data=param.args)
+                    response = requests.post(param.api, data=param.args, timeout=60)
                 else:
                     response = requests.request(
-                        param.method.lower(), param.api, data=param.args
-                    )
+                        param.method.lower(), param.api, data=param.args, 
+                    timeout=60)
                 response.raise_for_status()  # 如果请求返回一个错误状态码，则抛出HTTPError异常
             except HTTPError as http_err:
                 print(f"HTTP error occurred: {http_err}")
