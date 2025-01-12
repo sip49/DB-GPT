@@ -760,7 +760,7 @@ def _get_jinja2_template_vars(template_str: str) -> Set[str]:
     """Get template variables from a template string."""
     from jinja2 import Environment, meta
 
-    env = Environment()
+    env = Environment(autoescape=True)
     ast = env.parse(template_str)
     variables = meta.find_undeclared_variables(ast)
     return variables
