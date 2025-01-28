@@ -93,7 +93,7 @@ def _sync_api_remote(path, method="GET"):
                 self, func, path, method, *args, **kwargs
             )
 
-            response = requests.request(**request_params)
+            response = requests.request(**request_params, timeout=60)
 
             if response.status_code == 200:
                 return _parse_response(response.json(), return_type, actual_dataclass)

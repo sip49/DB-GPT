@@ -50,7 +50,7 @@ def baichuan_generate_stream(
     }
 
     print(f"Sending request to {url} with model {model_name}")
-    res = requests.post(url=url, json=payload, headers=headers)
+    res = requests.post(url=url, json=payload, headers=headers, timeout=60)
 
     text = ""
     for line in res.iter_lines():

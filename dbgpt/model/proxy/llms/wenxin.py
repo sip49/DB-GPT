@@ -45,7 +45,7 @@ def _build_access_token(api_key: str, secret_key: str) -> str:
         "client_secret": secret_key,
     }
 
-    res = requests.get(url=url, params=params)
+    res = requests.get(url=url, params=params, timeout=60)
 
     if res.status_code == 200:
         return res.json().get("access_token")
@@ -177,8 +177,8 @@ class WenxinLLMClient(ProxyLLMClient):
 
             text = ""
             res = requests.post(
-                proxy_server_url, headers=headers, json=payload, stream=True
-            )
+                proxy_server_url, headers=headers, json=payload, stream=True, 
+            timeout=60)
             logger.info(
                 f"Send request to {proxy_server_url} with real model {self._model}, model version {self._model_version}"
             )
