@@ -11,6 +11,7 @@ from urllib.parse import quote, urlparse
 
 import setuptools
 from setuptools import find_packages
+from security import safe_command
 
 with open("README.md", mode="r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -59,7 +60,7 @@ def get_latest_version(package_name: str, index_url: str, default_version: str):
         index_url,
     ]
 
-    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    result = safe_command.run(subprocess.run, command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode != 0:
         print("Error executing command.")
         print(result.stderr.decode())
