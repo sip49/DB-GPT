@@ -11,6 +11,7 @@ from dbgpt.agent.common.schema import Status
 from dbgpt.agent.plugin.generator import PluginPromptGenerator
 from dbgpt.agent.resource.resource_api import AgentResource, ResourceType
 from dbgpt.vis.tags.vis_plugin import Vis, VisPlugin
+from security import safe_requests
 
 logger = logging.getLogger(__name__)
 
@@ -93,7 +94,7 @@ class IndicatorAction(Action[IndicatorInput]):
             try:
                 status = Status.RUNNING.value
                 if param.method.lower() == "get":
-                    response = requests.get(param.api, params=param.args)
+                    response = safe_requests.get(param.api, params=param.args)
                 elif param.method.lower() == "post":
                     response = requests.post(param.api, data=param.args)
                 else:
