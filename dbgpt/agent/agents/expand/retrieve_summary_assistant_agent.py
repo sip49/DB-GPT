@@ -8,7 +8,6 @@ from typing import Callable, Dict, List, Literal, Optional, Union
 from urllib.parse import urlparse
 
 import pypdf
-import requests
 import tiktoken
 from bs4 import BeautifulSoup
 
@@ -18,6 +17,7 @@ from dbgpt.agent.memory.gpts_memory import GptsMemory
 from dbgpt.agent.plugin.commands.command_mange import ApiCall
 from dbgpt.configs.model_config import PILOT_PATH
 from dbgpt.core.interface.message import ModelMessageRoleType
+from security import safe_requests
 
 try:
     from termcolor import colored
@@ -396,7 +396,7 @@ class RetrieveSummaryAssistantAgent(ConversableAgent):
             save_path = os.path.join(target_directory, os.path.basename(url))
         else:
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        with requests.get(url, stream=True) as r:
+        with safe_requests.get(url, stream=True) as r:
             r.raise_for_status()
             with open(save_path, "wb") as f:
                 for chunk in r.iter_content(chunk_size=8192):

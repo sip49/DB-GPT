@@ -18,6 +18,7 @@ from dbgpt.core import (
 from dbgpt.model.parameter import ProxyModelParameters
 from dbgpt.model.proxy.base import ProxyLLMClient
 from dbgpt.model.proxy.llms.proxy_model import ProxyModel
+from security import safe_requests
 
 # https://cloud.baidu.com/doc/WENXINWORKSHOP/s/clntwmv7t
 MODEL_VERSION_MAPPING = {
@@ -45,7 +46,7 @@ def _build_access_token(api_key: str, secret_key: str) -> str:
         "client_secret": secret_key,
     }
 
-    res = requests.get(url=url, params=params)
+    res = safe_requests.get(url=url, params=params)
 
     if res.status_code == 200:
         return res.json().get("access_token")
