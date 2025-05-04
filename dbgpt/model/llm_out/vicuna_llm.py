@@ -34,7 +34,7 @@ class VicunaLLM(LLM):
         response = requests.post(
             url=urljoin(CFG.MODEL_SERVER, self.vicuna_generate_path),
             data=json.dumps(params),
-        )
+        timeout=60)
 
         skip_echo_len = len(params["prompt"]) + 1 - params["prompt"].count("</s>") * 3
         for chunk in response.iter_lines(decode_unicode=False, delimiter=b"\0"):
@@ -62,7 +62,7 @@ class VicunaEmbeddingLLM(BaseModel, Embeddings):
         response = requests.post(
             url=urljoin(CFG.MODEL_SERVER, self.vicuna_embedding_path),
             json={"prompt": p},
-        )
+        timeout=60)
         response.raise_for_status()
         return response.json()["response"]
 
