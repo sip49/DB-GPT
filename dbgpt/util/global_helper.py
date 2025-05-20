@@ -2,7 +2,6 @@
 
 import asyncio
 import os
-import random
 import sys
 import time
 import traceback
@@ -26,6 +25,7 @@ from typing import (
     Union,
     cast,
 )
+import secrets
 
 
 class GlobalsHelper:
@@ -99,7 +99,7 @@ def get_new_id(d: Set) -> str:
 def get_new_int_id(d: Set) -> int:
     """Get a new integer ID."""
     while True:
-        new_id = random.randint(0, sys.maxsize)
+        new_id = secrets.SystemRandom().randint(0, sys.maxsize)
         if new_id not in d:
             break
     return new_id
