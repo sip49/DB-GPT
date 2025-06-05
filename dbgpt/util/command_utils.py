@@ -6,6 +6,7 @@ from functools import lru_cache
 from typing import Dict, List
 
 import psutil
+from security import safe_command
 
 
 def _get_abspath_of_current_command(command_path: str):
@@ -32,16 +33,14 @@ def _run_current_with_daemon(name: str, log_file: str):
     print(f"daemon cmd: {daemon_cmd}")
     # Check the platform and set the appropriate flags or functions
     if "windows" in platform.system().lower():
-        process = subprocess.Popen(
-            daemon_cmd,
+        process = safe_command.run(subprocess.Popen, daemon_cmd,
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             shell=True,
         )
     else:  # macOS, Linux, and other Unix-like systems
-        process = subprocess.Popen(
-            daemon_cmd,
+        process = safe_command.run(subprocess.Popen, daemon_cmd,
             preexec_fn=os.setsid,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -70,7 +69,7 @@ def _run_current_with_gunicorn(app: str, config_path: str, kwargs: Dict):
     if "windows" in platform.system().lower():
         raise Exception("Not support on windows")
     else:  # macOS, Linux, and other Unix-like systems
-        process = subprocess.Popen(cmd, shell=True, env=env_to_app)
+        process = safe_command.run(subprocess.Popen, cmd, shell=True, env=env_to_app)
     print(f"Started {app} with gunicorn in background with pid: {process.pid}")
 
 

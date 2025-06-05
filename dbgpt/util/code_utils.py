@@ -8,6 +8,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from hashlib import md5
 from typing import Callable, Dict, List, Optional, Tuple, Union
+from security import safe_command
 
 # Regular expression for finding a code block
 # ```[ \t]*(\w+)?[ \t]*\r?\n(.*?)[ \t]*\r?\n``` Matches multi-line code blocks.
@@ -247,8 +248,7 @@ def execute_code(
             logger.warning(
                 "SIGALRM is not supported on Windows. No timeout will be enforced."
             )
-            result = subprocess.run(
-                cmd,
+            result = safe_command.run(subprocess.run, cmd,
                 cwd=work_dir,
                 capture_output=True,
                 text=True,
