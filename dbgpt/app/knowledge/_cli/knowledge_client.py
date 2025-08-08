@@ -44,7 +44,7 @@ class ApiClient:
             data = data.__dict__
         url = urljoin(self.api_address, url)
         logger.debug(f"Send request to {url}, data: {data}")
-        response = requests.post(url, data=json.dumps(data), headers=HTTP_HEADERS)
+        response = requests.post(url, data=json.dumps(data), headers=HTTP_HEADERS, timeout=60)
         return self._handle_response(response)
 
 
@@ -85,7 +85,7 @@ class KnowledgeApiClient(ApiClient):
         with open(doc_file_path, "rb") as f:
             files = {"doc_file": f}
             data = {"doc_name": doc_name, "doc_type": doc_type}
-            response = requests.post(url, data=data, files=files)
+            response = requests.post(url, data=data, files=files, timeout=60)
         return self._handle_response(response)
 
     def document_sync(self, space_name: str, request: DocumentSyncRequest):

@@ -49,8 +49,8 @@ def bard_generate_stream(
         headers = {"Content-Type": "application/json"}
         payloads = {"input": "\n".join(msgs)}
         response = requests.post(
-            proxy_server_url, headers=headers, json=payloads, stream=False
-        )
+            proxy_server_url, headers=headers, json=payloads, stream=False, 
+        timeout=60)
         if response.ok:
             yield response.text
         else:
